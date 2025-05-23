@@ -5,11 +5,8 @@ class HomeController extends GetxController {
   String input = '';
   String result = '';
   bool isDegreeMode = true;
-  bool showHistory = false;
-
   bool isAdvanced = false;
-
-  List<String> history = []; // ✅ हिस्ट्री स्टोर करने के लिए
+  List<String> history = [];
 
   final List<String> basicButtons = [
     'AC',
@@ -42,8 +39,11 @@ class HomeController extends GetxController {
     'e',
     'ln',
     'log',
+    '(',
+    ')',
   ];
-  final List<String> advancedButtonsOk = ['√', 'π', '^', '!'];
+  final List<String> advancedButtonsTop = ['√', 'π', '^', '!'];
+
   void toggleDegreeMode() {
     isDegreeMode = !isDegreeMode;
     update();
@@ -82,30 +82,33 @@ class HomeController extends GetxController {
       String finalInput = input
           .replaceAll('×', '*')
           .replaceAll('÷', '/')
-          .replaceAll('π', 'pi')
+          .replaceAll('π', '3.1415926535897932')
           .replaceAll('√', 'sqrt')
           .replaceAll('%', '*0.01')
           .replaceAll('^', '^')
           .replaceAll('e', '2.718281828459045');
 
-      finalInput = _replaceFactorial(finalInput);
+      finalInput = replaceFactorial(finalInput);
 
-      Parser p = Parser();
-      ContextModel cm = ContextModel();
+      finalInput = finalInput.replaceAllMapped(
+        RegExp(r'log\(([^()]+)\)'),
+        (match) => '(log(${match[1]}) / log(10))',
+      );
 
-      double eval;
       if (isDegreeMode) {
-        finalInput = _convertTrigToRadians(finalInput);
+        finalInput = convertTrigToRadians(finalInput);
       }
 
+      Parser p = Parser();
       Expression exp = p.parse(finalInput);
-      eval = exp.evaluate(EvaluationType.REAL, cm);
+      ContextModel cm = ContextModel();
+
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
 
       result = eval
           .toStringAsFixed(8)
           .replaceAll(RegExp(r'([.]*0+)(?!.*\d)'), '');
 
-      // ✅ हिस्ट्री में जोड़ना
       history.add('$input = $result');
     } catch (e) {
       result = 'Error';
@@ -113,23 +116,23 @@ class HomeController extends GetxController {
     update();
   }
 
-  String _convertTrigToRadians(String input) {
-    return input
-        .replaceAllMapped(
-          RegExp(r'sin\(([^)]+)\)'),
-          (m) => 'sin((${m[1]} * pi / 180))',
-        )
-        .replaceAllMapped(
-          RegExp(r'cos\(([^)]+)\)'),
-          (m) => 'cos((${m[1]} * pi / 180))',
-        )
-        .replaceAllMapped(
-          RegExp(r'tan\(([^)]+)\)'),
-          (m) => 'tan((${m[1]} * pi / 180))',
-        );
+  String convertTrigToRadians(String input) {
+    input = input.replaceAllMapped(
+      RegExp(r'sin\(([^()]+)\)'),
+      (match) => 'sin((${match[1]} * 3.1415926535897932 / 180))',
+    );
+    input = input.replaceAllMapped(
+      RegExp(r'cos\(([^()]+)\)'),
+      (match) => 'cos((${match[1]} * 3.1415926535897932 / 180))',
+    );
+    input = input.replaceAllMapped(
+      RegExp(r'tan\(([^()]+)\)'),
+      (match) => 'tan((${match[1]} * 3.1415926535897932 / 180))',
+    );
+    return input;
   }
 
-  String _replaceFactorial(String input) {
+  String replaceFactorial(String input) {
     return input.replaceAllMapped(RegExp(r'(\d+)!'), (match) {
       int num = int.parse(match.group(1)!);
       return factorial(num).toString();
@@ -173,6 +176,10 @@ class HomeController extends GetxController {
         break;
       case 'DEG':
         toggleDegreeMode();
+        break;
+      case '(':
+      case ')':
+        appendValue(btn);
         break;
       default:
         appendValue(btn);

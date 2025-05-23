@@ -15,43 +15,51 @@ class HomeView extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.more_vert_sharp),
             onPressed:
-                () => _showHistoryDialog(context, Get.find<HomeController>()),
+                () => showHistoryDialog(context, Get.find<HomeController>()),
           ),
         ],
       ),
-
       body: GetBuilder<HomeController>(
         builder:
             (controller) => Column(
               children: [
-                SizedBox(height: 35),
-                _buildDisplay(),
-                _buildToggleButton(),
-                if (controller.isAdvanced) _buildAdvancedButtons(),
-                Expanded(child: _buildBasicButtons()),
+                SizedBox(height: Get.height * 0.035),
+                outputDisplay(),
+                toggleButton(),
+                if (controller.isAdvanced) advancedButtons(),
+                Expanded(child: basicButtons()),
               ],
             ),
       ),
     );
   }
 
-  Widget _buildDisplay() {
+  Widget outputDisplay() {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          padding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.04,
+            vertical: Get.height * 0.03,
+          ),
           alignment: Alignment.bottomRight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 controller.input,
-                style: TextStyle(fontSize: 24, color: Colors.grey[700]),
+                style: TextStyle(
+                  fontSize: Get.height * 0.025,
+                  color: Colors.grey[700],
+                ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: Get.height * 0.01),
               Text(
                 controller.result,
-                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: Get.height * 0.045,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -60,27 +68,27 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildToggleButton() {
+  Widget toggleButton() {
     return Row(
       children: [
         Expanded(
           child: GetBuilder<HomeController>(
             builder: (controller) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: Get.width * 0.02),
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: controller.advancedButtonsOk.length,
+                  itemCount: controller.advancedButtonsTop.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
+                    mainAxisSpacing: Get.height * 0.01,
+                    crossAxisSpacing: Get.width * 0.02,
                     childAspectRatio: 2,
                   ),
                   itemBuilder: (context, index) {
-                    final btn = controller.advancedButtonsOk[index];
-                    return _advancedButtons(
+                    final btn = controller.advancedButtonsTop[index];
+                    return showAdvancedButtons(
                       btn,
                       isAdvanced: true,
                       index: index,
@@ -96,13 +104,15 @@ class HomeView extends StatelessWidget {
             return GestureDetector(
               onTap: controller.toggleAdvanced,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.02,
+                  vertical: Get.height * 0.01,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFFEBF0FD),
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: BorderRadius.circular(Get.width * 0.015),
                   ),
-
                   child: Icon(
                     controller.isAdvanced
                         ? Icons.keyboard_arrow_down
@@ -117,24 +127,24 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildAdvancedButtons() {
+  Widget advancedButtons() {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: Get.width * 0.02),
           child: GridView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: controller.advancedButtons.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
+              mainAxisSpacing: Get.height * 0.01,
+              crossAxisSpacing: Get.width * 0.02,
               childAspectRatio: 2,
             ),
             itemBuilder: (context, index) {
               final btn = controller.advancedButtons[index];
-              return _advancedButtons(btn, isAdvanced: true, index: index);
+              return showAdvancedButtons(btn, isAdvanced: true, index: index);
             },
           ),
         );
@@ -142,9 +152,8 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _advancedButtons(
+  Widget showAdvancedButtons(
     String text, {
-
     bool isAdvanced = false,
     required index,
   }) {
@@ -154,15 +163,17 @@ class HomeView extends StatelessWidget {
           onTap: () => controller.handleButtonPress(text),
           child: Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 220,
+            height: Get.height * 0.08,
+            width: Get.width * 0.2,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: BorderRadius.circular(Get.width * 0.05),
             ),
-
             child: Text(
               text,
-              style: TextStyle(fontSize: 18, color: Colors.black87),
+              style: TextStyle(
+                fontSize: Get.height * 0.022,
+                color: Colors.black87,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -171,36 +182,36 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildBasicButtons() {
+  Widget basicButtons() {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return GridView.builder(
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.all(Get.width * 0.02),
           itemCount: controller.basicButtons.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
+            mainAxisSpacing: Get.height * 0.015,
+            crossAxisSpacing: Get.width * 0.02,
             childAspectRatio: 1.4,
           ),
           itemBuilder: (context, index) {
             final btn = controller.basicButtons[index];
-            return _buildButton(btn, index);
+            return showButton(btn, index);
           },
         );
       },
     );
   }
 
-  Widget _buildButton(String text, index) {
+  Widget showButton(String text, index) {
     return GetBuilder<HomeController>(
       builder: (controller) {
         return GestureDetector(
           onTap: () => controller.handleButtonPress(text),
           child: Container(
             alignment: Alignment.center,
-            height: 180,
-            width: 220,
+            height: Get.height * 0.1,
+            width: Get.width * 0.2,
             decoration: BoxDecoration(
               color:
                   index == 0 ||
@@ -213,13 +224,14 @@ class HomeView extends StatelessWidget {
                           index == 19
                       ? Color(0xFFF2F2F2)
                       : Color(0xFFEBF0FD),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: BorderRadius.circular(Get.width * 0.05),
             ),
-
             child: Text(
-              // index.toString(),
               text,
-              style: TextStyle(fontSize: 18, color: Colors.black87),
+              style: TextStyle(
+                fontSize: Get.height * 0.022,
+                color: Colors.black87,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -227,18 +239,8 @@ class HomeView extends StatelessWidget {
       },
     );
   }
-  // }Widget _buildButton(String text, {bool isAdvanced = false}) {
-  //   return ElevatedButton(
-  //     onPressed: () => _handleButtonPress(text),
-  //     style: ElevatedButton.styleFrom(
-  //       backgroundColor: isAdvanced ? Colors.grey[200] : Colors.grey[100],
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-  //     ),
-  //     child: Text(text, style: TextStyle(fontSize: 18, color: Colors.black87)),
-  //   );
-  // }
 
-  void _showHistoryDialog(BuildContext context, controller) {
+  void showHistoryDialog(BuildContext context, controller) {
     final history = controller.history;
 
     showDialog(
