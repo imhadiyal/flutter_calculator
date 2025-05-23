@@ -31,7 +31,6 @@ class HomeController extends GetxController {
     '=',
   ];
   final List<String> advancedButtons = [
-    'DEG',
     'sin',
     'cos',
     'tan',
