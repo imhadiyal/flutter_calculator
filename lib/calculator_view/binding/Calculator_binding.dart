@@ -5,5 +5,6 @@ class CalculatorBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<CalculatorsController>(() => CalculatorsController());
+    Get.lazyPut<CalculatorsController>(() => CalculatorsController());
   }
 }

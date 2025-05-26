@@ -1,6 +1,7 @@
 class AppRoutes {
-  static const String bottomBar = '/BottomBar';
-  static const String homePage = '/HomePage';
-  static const String calculatorPage = '/CalculatorPage';
-  static const String settings = '/Settings';
+  static const String bottomBar = '/bottomBar';
+  static const String homePage = '/homePage';
+  static const String calculatorPage = '/calculatorPage';
+  static const String settings = '/settings';
+  static const String gstCalculator = '/gstCalculatorView';
 }
