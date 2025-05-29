@@ -77,9 +77,9 @@ class CalculatorView extends StatelessWidget {
       // case 'Loan Calculator':
       //   Get.to(() => const LoanCalculatorView());
       //   break;
-      // case 'Salary Calculator':
-      //   Get.to(() => const SalaryCalculatorView());
-      //   break;
+      case 'Salary Calculator':
+        Get.toNamed(AppRoutes.salaryCalculator);
+        break;
       // case 'Saving Calculator':
       //   Get.to(() => const SavingCalculatorView());
       //   break;

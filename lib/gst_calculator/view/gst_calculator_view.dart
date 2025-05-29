@@ -23,7 +23,6 @@ class GstCalculatorView extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Display amount container with reduced padding
                     Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 6,
@@ -209,7 +208,15 @@ class GstCalculatorView extends StatelessWidget {
         height: 60, // reduced from 200 to 60
         margin: const EdgeInsets.all(6), // reduced from 10 to 6
         alignment: Alignment.center,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+          color:
+              value == ''
+                  ? Colors.transparent
+                  : isSpecial
+                  ? Colors.grey.shade300
+                  : Colors.blue.shade50,
+          borderRadius: BorderRadius.circular(20),
+        ),
         child:
             value == '⌫'
                 ? Icon(Icons.backspace_outlined, size: Get.height * 0.03)

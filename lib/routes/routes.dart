@@ -5,6 +5,8 @@ import 'package:calling/gst_calculator/view/gst_calculator_view.dart';
 import 'package:calling/home_page/binding/home_binding.dart';
 import 'package:calling/home_page/views/calculator_view.dart';
 import 'package:calling/routes/page_routes.dart';
+import 'package:calling/salary_calculator/binding/salary_binding.dart';
+import 'package:calling/salary_calculator/view/salary_view.dart';
 import 'package:calling/setting_page/binding/setting_binding.dart';
 import 'package:get/get.dart';
 
@@ -31,6 +33,11 @@ class AppPages {
       name: AppRoutes.gstCalculator,
       page: () => GstCalculatorView(),
       binding: GstBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.salaryCalculator,
+      page: () => SalaryView(),
+      binding: SalaryBinding(),
     ),
   ];
 }
